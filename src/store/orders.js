@@ -32,9 +32,11 @@
                 const data = await response.json()
                 console.log('received data:', data)                
                 commit('addOrders', data)
+                return true
             } 
             catch (error) {
               console.log('error: ', error)
+              return false
             }
         },
     async newOrder({commit}, newOrder) {         

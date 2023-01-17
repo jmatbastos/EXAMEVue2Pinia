@@ -37,9 +37,11 @@
                 const data = await response.json()
                 console.log('received data:', data)                
                 commit('addProducts', data)
+                return true
             } 
             catch (error) {
                 console.log('error: ', error)
+                return false
             }
         },
   },
