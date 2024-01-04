@@ -30,7 +30,15 @@
 import Footer from '@/components/Footer.vue'
 import Header from '@/components/Header.vue'
 
+import { useProductsStore } from '@/store/products'
+import { useCategoriesStore } from '@/store/categories'
+
 export default {
+	setup() {
+		const productsStore = useProductsStore()		
+        const categoriesStore = useCategoriesStore()	
+		return { productsStore, categoriesStore }
+    },    
 
     components: {
         Footer,

@@ -1,6 +1,8 @@
-  const orders = {
-  namespaced: true,
-  state: {
+import { defineStore } from 'pinia'
+
+export const useOrdersStore = defineStore({
+  id: 'orders',
+  state: () => ({
     orders: 
     [
     //{
@@ -11,27 +13,25 @@
      //"product_image":"p1.jpeg",     
     //}
     ]
-  },
+  }),
   getters: {
     getOrders (state) {
       return state.orders
     },   
   }, 
-  mutations: {
-    addOrders(state, orders){
-        state.orders = orders
-    },
-    newOrder(state, order){
-      state.orders = [order, ...state.orders]
-    },
-  },
   actions: {
-    async getMyOrdersFromDB({commit},id) {
+    addOrders(orders){
+      this.orders = orders
+    },
+    newOrder(order){
+      this.orders = [order, ...this.orders]
+    },  
+    async getMyOrdersFromDB(id) {
             try {
                 const response = await fetch(`http://daw.deei.fct.ualg.pt/~a12345/EXAME/api/orders.php?customer_id=${id}`)
                 const data = await response.json()
                 console.log('received data:', data)                
-                commit('addOrders', data)
+                this.addOrders(data)
                 return true
             } 
             catch (error) {
@@ -39,7 +39,7 @@
               return false
             }
         },
-    async newOrder({commit}, newOrder) {         
+    async newOrder(newOrder) {         
           try {
               const response = await fetch('http://daw.deei.fct.ualg.pt/~a12345/EXAME/api/orders.php', {
                   method: 'POST',
@@ -48,7 +48,7 @@
               })
               const data = await response.json()
               console.log('received data:', data)
-              commit('newOrder', data)
+              this.newOrder(data)
               return true
           } 
           catch (error) {
@@ -57,8 +57,4 @@
           }
       },     
   },
-  modules: {
-  }
-}
-export default 
-    orders
+})

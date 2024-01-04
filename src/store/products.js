@@ -1,7 +1,8 @@
- 
-  const products = {
-  namespaced: true,
-  state: {
+import { defineStore } from 'pinia'
+
+export const useProductsStore = defineStore({
+  id: 'products',
+  state: () => ({
     products: [
     // {
     //"cat_name":"Pizza",
@@ -12,7 +13,7 @@
     //"image":"NULL",
     //}
     ]
-  },
+  }),
   getters: {
     getProducts (state) {
       return state.products
@@ -24,19 +25,16 @@
       return results
     },    
   }, 
-  mutations: {
-    addProducts(state, products){
-        state.products = products
-    },
-
-    },
   actions: {
-    async getProductsFromDB({commit}) {
+    addProducts(products){
+      this.products = products
+    },
+    async getProductsFromDB() {
             try {
                 const response = await fetch('http://daw.deei.fct.ualg.pt/~a12345/EXAME/api/products.php')
                 const data = await response.json()
                 console.log('received data:', data)                
-                commit('addProducts', data)
+                this.addProducts(data)
                 return true
             } 
             catch (error) {
@@ -45,8 +43,5 @@
             }
         },
   },
-  modules: {
-  }
-}
-export default 
-    products
+
+})

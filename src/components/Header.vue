@@ -43,22 +43,27 @@
 
 <script>
 
+import { useUserStore } from '@/store/user'
 
 export default {
+	setup() {
+		const userStore = useUserStore()		
+		return { userStore }
+    },
     methods: {
         logout() {
-            this.$store.commit('user/logoutUser')
+            this.userStore.logoutUser()
             localStorage.setItem('message', 'Bye, see you back soon!');
             this.$router.push('/message')
         }
     },
     computed: {
         userIsEmpty: function() {
-            let obj = this.$store.getters['user/getUser']
+            let obj = this.userStore.getUser
             return Object.keys(obj).length === 0;
         },
         userName: function() {
-            return this.$store.getters['user/getUser'].name
+            return this.userStore.user.name
         }
     },
 }

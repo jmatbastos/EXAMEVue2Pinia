@@ -30,10 +30,13 @@
 import Footer from '@/components/Footer.vue'
 import Header from '@/components/Header.vue'
 
-
+import { useUserStore } from '@/store/user'
 
 export default {
-    name: 'login',
+	setup() {
+		const userStore = useUserStore()		
+		return { userStore }
+    },
     components: {
         Footer,
         Header
